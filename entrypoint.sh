@@ -19,7 +19,7 @@ if [ -z != ${10} ]; then
 
 	if test $9 == "true";then
   		echo 'Start delete remote files'
-		sshpass -p ${10} ssh -o StrictHostKeyChecking=no -p $3 $1@$2 rm -rf $6
+		sshpass -p ${10} ssh -o StrictHostKeyChecking=no -p $3 $1@$2 rm -r $6*
 	fi
 	if test $7 = "true"; then
   		echo "Connection via sftp protocol only, skip the command to create a directory"
@@ -33,6 +33,11 @@ if [ -z != ${10} ]; then
 	printf "%s" "put -r $5 $6" >$TEMP_SFTP_FILE
 	#-o StrictHostKeyChecking=no avoid Host key verification failed.
 	SSHPASS=${10} sshpass -e sftp -oBatchMode=no -b $TEMP_SFTP_FILE -P $3 $8 -o StrictHostKeyChecking=no $1@$2
+
+	echo 'Unzip Start'
+    	# Assuming the file to be unzipped is named "archive.zip"
+    	# Adjust the file name and path as necessary
+    	sshpass -p ${10} ssh -o StrictHostKeyChecking=no -p $3 $1@$2 "unzip $6build.zip -d $6"
 
 	echo 'Deploy Success'
 
